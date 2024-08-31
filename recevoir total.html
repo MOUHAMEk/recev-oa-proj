@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Voir Avancement du Projet</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        header {
+            text-align: center;
+            font-size: 30px;
+            font-family: 'Comic Sans MS', cursive, sans-serif;
+            background-color: #3498db;
+            color: white;
+            padding: 20px;
+            text-transform: uppercase;
+            width: 100%;
+        }
+        main {
+            margin-top: 50px;
+            text-align: center;
+            width: 80%;
+        }
+        .progress-box {
+            background-color: #fff;
+            border: 2px solid #3498db;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 20px;
+            display: inline-block;
+            width: 200px;
+            text-align: center;
+        }
+        .overall-progress-box {
+            background-color: red;
+            color: white;
+            font-weight: bold;
+        }
+        footer {
+            text-align: center;
+            font-size: 18px;
+            background-color: #2980b9;
+            color: white;
+            padding: 20px;
+            width: 100%;
+            margin-top: 40px;
+            text-transform: uppercase;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Voir l'Avancement du Projet</h1>
+    </header>
+    <main>
+        <div id="progress-sections">
+            <div class="progress-box" id="rdc-progress-box">
+                <h2>RDC</h2>
+                <p id="rdc-progress">0%</p>
+            </div>
+            <div class="progress-box" id="r1-progress-box">
+                <h2>R+1</h2>
+                <p id="r1-progress">0%</p>
+            </div>
+            <div class="progress-box" id="r2-progress-box">
+                <h2>R+2</h2>
+                <p id="r2-progress">0%</p>
+            </div>
+            <div class="progress-box" id="r3-progress-box">
+                <h2>R+3</h2>
+                <p id="r3-progress">0%</p>
+            </div>
+            <div class="progress-box" id="r4-progress-box">
+                <h2>R+4</h2>
+                <p id="r4-progress">0%</p>
+            </div>
+            <div class="progress-box overall-progress-box" id="overall-progress-box">
+                <h2>Avancement Total</h2>
+                <p id="overall-progress">0%</p>
+            </div>
+        </div>
+    </main>
+    <footer>
+        MArisk
+    </footer>
+    <script src="https://www.gstatic.com/firebasejs/8.6.8/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.6.8/firebase-database.js"></script>
+    <script>
+        // Firebase configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyCOA0a_rjXqY99KXyyuHEiPOJDGGapZQUo",
+            authDomain: "suivi-49954.firebaseapp.com",
+            databaseURL: "https://suivi-49954-default-rtdb.firebaseio.com",
+            projectId: "suivi-49954",
+            storageBucket: "suivi-49954.appspot.com",
+            messagingSenderId: "141836603566",
+            appId: "1:141836603566:web:aaff934468238d958cdd3f",
+            measurementId: "G-3CMYEPPYK8"
+        };
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+        const database = firebase.database();
+
+        function updateProgress() {
+            database.ref('project-progress').limitToLast(1).once('value', (snapshot) => {
+                const data = snapshot.val();
+                const lastKey = Object.keys(data)[0];
+                const progress = data[lastKey];
+
+                document.getElementById('rdc-progress').textContent = `${progress.rdcProgress || 0}%`;
+                document.getElementById('r1-progress').textContent = `${progress.r1Progress || 0}%`;
+                document.getElementById('r2-progress').textContent = `${progress.r2Progress || 0}%`;
+                document.getElementById('r3-progress').textContent = `${progress.r3Progress || 0}%`;
+                document.getElementById('r4-progress').textContent = `${progress.r4Progress || 0}%`;
+                document.getElementById('overall-progress').textContent = `${progress.overallProgress || 0}%`;
+            });
+        }
+
+        updateProgress();
+    </script>
+</body>
+</html>
